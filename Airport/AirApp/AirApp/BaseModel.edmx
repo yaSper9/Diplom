@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище AirBaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Departures">
+          <Key>
+            <PropertyRef Name="CodeDeparture" />
+          </Key>
+          <Property Name="CodeDeparture" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Flight" Type="int" Nullable="false" />
+          <Property Name="DepartureTime" Type="datetime" Nullable="false" />
+          <Property Name="Plane" Type="int" Nullable="false" />
+          <Property Name="CrewCommander" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DestinationAirports">
+          <Key>
+            <PropertyRef Name="AirportCode" />
+          </Key>
+          <Property Name="AirportCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Flights">
+          <Key>
+            <PropertyRef Name="FlightCode" />
+          </Key>
+          <Property Name="FlightCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightNumber" Type="int" Nullable="false" />
+          <Property Name="DepartureAirport" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DestAirport" Type="int" Nullable="false" />
+          <Property Name="FlightDuration" Type="int" Nullable="false" />
+          <Property Name="TicketPrice" Type="smallmoney" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Passengers">
+          <Key>
+            <PropertyRef Name="CodePassenger" />
+          </Key>
+          <Property Name="CodePassenger" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Departure" Type="int" Nullable="false" />
+          <Property Name="SeatNumber" Type="int" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Passport" Type="nchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Planes">
+          <Key>
+            <PropertyRef Name="PlaneCode" />
+          </Key>
+          <Property Name="PlaneCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypePlane" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="NumberSeat" Type="int" Nullable="false" />
+          <Property Name="FlightRange" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserCode" />
+          </Key>
+          <Property Name="UserCode" Type="int" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Departures_Flights">
+          <End Role="Flights" Type="Self.Flights" Multiplicity="1" />
+          <End Role="Departures" Type="Self.Departures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flights">
+              <PropertyRef Name="FlightCode" />
+            </Principal>
+            <Dependent Role="Departures">
+              <PropertyRef Name="Flight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Departures_Planes">
+          <End Role="Planes" Type="Self.Planes" Multiplicity="1" />
+          <End Role="Departures" Type="Self.Departures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Planes">
+              <PropertyRef Name="PlaneCode" />
+            </Principal>
+            <Dependent Role="Departures">
+              <PropertyRef Name="Plane" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flights_DestinationAirports">
+          <End Role="DestinationAirports" Type="Self.DestinationAirports" Multiplicity="1" />
+          <End Role="Flights" Type="Self.Flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DestinationAirports">
+              <PropertyRef Name="AirportCode" />
+            </Principal>
+            <Dependent Role="Flights">
+              <PropertyRef Name="DestAirport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Passengers_Departures">
+          <End Role="Departures" Type="Self.Departures" Multiplicity="1" />
+          <End Role="Passengers" Type="Self.Passengers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departures">
+              <PropertyRef Name="CodeDeparture" />
+            </Principal>
+            <Dependent Role="Passengers">
+              <PropertyRef Name="Departure" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище AirBaseModelContainer">
+          <EntitySet Name="Departures" EntityType="Self.Departures" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DestinationAirports" EntityType="Self.DestinationAirports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Flights" EntityType="Self.Flights" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Passengers" EntityType="Self.Passengers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Planes" EntityType="Self.Planes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Departures_Flights" Association="Self.FK_Departures_Flights">
+            <End Role="Flights" EntitySet="Flights" />
+            <End Role="Departures" EntitySet="Departures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Departures_Planes" Association="Self.FK_Departures_Planes">
+            <End Role="Planes" EntitySet="Planes" />
+            <End Role="Departures" EntitySet="Departures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flights_DestinationAirports" Association="Self.FK_Flights_DestinationAirports">
+            <End Role="DestinationAirports" EntitySet="DestinationAirports" />
+            <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Passengers_Departures" Association="Self.FK_Passengers_Departures">
+            <End Role="Departures" EntitySet="Departures" />
+            <End Role="Passengers" EntitySet="Passengers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AirBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Departures">
+          <Key>
+            <PropertyRef Name="CodeDeparture" />
+          </Key>
+          <Property Name="CodeDeparture" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Flight" Type="Int32" Nullable="false" />
+          <Property Name="DepartureTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Plane" Type="Int32" Nullable="false" />
+          <Property Name="CrewCommander" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK_Departures_Flights" FromRole="Departures" ToRole="Flights" />
+          <NavigationProperty Name="Planes" Relationship="Self.FK_Departures_Planes" FromRole="Departures" ToRole="Planes" />
+          <NavigationProperty Name="Passengers" Relationship="Self.FK_Passengers_Departures" FromRole="Departures" ToRole="Passengers" />
+        </EntityType>
+        <EntityType Name="DestinationAirports">
+          <Key>
+            <PropertyRef Name="AirportCode" />
+          </Key>
+          <Property Name="AirportCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK_Flights_DestinationAirports" FromRole="DestinationAirports" ToRole="Flights" />
+        </EntityType>
+        <EntityType Name="Flights">
+          <Key>
+            <PropertyRef Name="FlightCode" />
+          </Key>
+          <Property Name="FlightCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightNumber" Type="Int32" Nullable="false" />
+          <Property Name="DepartureAirport" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DestAirport" Type="Int32" Nullable="false" />
+          <Property Name="FlightDuration" Type="Int32" Nullable="false" />
+          <Property Name="TicketPrice" Type="Decimal" Precision="10" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Departures" Relationship="Self.FK_Departures_Flights" FromRole="Flights" ToRole="Departures" />
+          <NavigationProperty Name="DestinationAirports" Relationship="Self.FK_Flights_DestinationAirports" FromRole="Flights" ToRole="DestinationAirports" />
+        </EntityType>
+        <EntityType Name="Passengers">
+          <Key>
+            <PropertyRef Name="CodePassenger" />
+          </Key>
+          <Property Name="CodePassenger" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Departure" Type="Int32" Nullable="false" />
+          <Property Name="SeatNumber" Type="Int32" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Passport" Type="String" MaxLength="11" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Departures" Relationship="Self.FK_Passengers_Departures" FromRole="Passengers" ToRole="Departures" />
+        </EntityType>
+        <EntityType Name="Planes">
+          <Key>
+            <PropertyRef Name="PlaneCode" />
+          </Key>
+          <Property Name="PlaneCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypePlane" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumberSeat" Type="Int32" Nullable="false" />
+          <Property Name="FlightRange" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Departures" Relationship="Self.FK_Departures_Planes" FromRole="Planes" ToRole="Departures" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserCode" />
+          </Key>
+          <Property Name="UserCode" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Departures_Flights">
+          <End Role="Flights" Type="Self.Flights" Multiplicity="1" />
+          <End Role="Departures" Type="Self.Departures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flights">
+              <PropertyRef Name="FlightCode" />
+            </Principal>
+            <Dependent Role="Departures">
+              <PropertyRef Name="Flight" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Departures_Planes">
+          <End Role="Planes" Type="Self.Planes" Multiplicity="1" />
+          <End Role="Departures" Type="Self.Departures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Planes">
+              <PropertyRef Name="PlaneCode" />
+            </Principal>
+            <Dependent Role="Departures">
+              <PropertyRef Name="Plane" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Passengers_Departures">
+          <End Role="Departures" Type="Self.Departures" Multiplicity="1" />
+          <End Role="Passengers" Type="Self.Passengers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departures">
+              <PropertyRef Name="CodeDeparture" />
+            </Principal>
+            <Dependent Role="Passengers">
+              <PropertyRef Name="Departure" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flights_DestinationAirports">
+          <End Role="DestinationAirports" Type="Self.DestinationAirports" Multiplicity="1" />
+          <End Role="Flights" Type="Self.Flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DestinationAirports">
+              <PropertyRef Name="AirportCode" />
+            </Principal>
+            <Dependent Role="Flights">
+              <PropertyRef Name="DestAirport" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AirBaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departures" EntityType="Self.Departures" />
+          <EntitySet Name="DestinationAirports" EntityType="Self.DestinationAirports" />
+          <EntitySet Name="Flights" EntityType="Self.Flights" />
+          <EntitySet Name="Passengers" EntityType="Self.Passengers" />
+          <EntitySet Name="Planes" EntityType="Self.Planes" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Departures_Flights" Association="Self.FK_Departures_Flights">
+            <End Role="Flights" EntitySet="Flights" />
+            <End Role="Departures" EntitySet="Departures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Departures_Planes" Association="Self.FK_Departures_Planes">
+            <End Role="Planes" EntitySet="Planes" />
+            <End Role="Departures" EntitySet="Departures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Passengers_Departures" Association="Self.FK_Passengers_Departures">
+            <End Role="Departures" EntitySet="Departures" />
+            <End Role="Passengers" EntitySet="Passengers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flights_DestinationAirports" Association="Self.FK_Flights_DestinationAirports">
+            <End Role="DestinationAirports" EntitySet="DestinationAirports" />
+            <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище AirBaseModelContainer" CdmEntityContainer="AirBaseEntities">
+          <EntitySetMapping Name="Departures">
+            <EntityTypeMapping TypeName="AirBaseModel.Departures">
+              <MappingFragment StoreEntitySet="Departures">
+                <ScalarProperty Name="CodeDeparture" ColumnName="CodeDeparture" />
+                <ScalarProperty Name="Flight" ColumnName="Flight" />
+                <ScalarProperty Name="DepartureTime" ColumnName="DepartureTime" />
+                <ScalarProperty Name="Plane" ColumnName="Plane" />
+                <ScalarProperty Name="CrewCommander" ColumnName="CrewCommander" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DestinationAirports">
+            <EntityTypeMapping TypeName="AirBaseModel.DestinationAirports">
+              <MappingFragment StoreEntitySet="DestinationAirports">
+                <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Flights">
+            <EntityTypeMapping TypeName="AirBaseModel.Flights">
+              <MappingFragment StoreEntitySet="Flights">
+                <ScalarProperty Name="FlightCode" ColumnName="FlightCode" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="DepartureAirport" ColumnName="DepartureAirport" />
+                <ScalarProperty Name="DestAirport" ColumnName="DestAirport" />
+                <ScalarProperty Name="FlightDuration" ColumnName="FlightDuration" />
+                <ScalarProperty Name="TicketPrice" ColumnName="TicketPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Passengers">
+            <EntityTypeMapping TypeName="AirBaseModel.Passengers">
+              <MappingFragment StoreEntitySet="Passengers">
+                <ScalarProperty Name="CodePassenger" ColumnName="CodePassenger" />
+                <ScalarProperty Name="Departure" ColumnName="Departure" />
+                <ScalarProperty Name="SeatNumber" ColumnName="SeatNumber" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="Passport" ColumnName="Passport" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planes">
+            <EntityTypeMapping TypeName="AirBaseModel.Planes">
+              <MappingFragment StoreEntitySet="Planes">
+                <ScalarProperty Name="PlaneCode" ColumnName="PlaneCode" />
+                <ScalarProperty Name="TypePlane" ColumnName="TypePlane" />
+                <ScalarProperty Name="NumberSeat" ColumnName="NumberSeat" />
+                <ScalarProperty Name="FlightRange" ColumnName="FlightRange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="AirBaseModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="AirBaseModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserCode" ColumnName="UserCode" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

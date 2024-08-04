@@ -1,0 +1,34 @@
+﻿<Page x:Class="AirApp.AddEditDeparturesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AirApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AddEditDeparturesPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Рейс"></TextBlock>
+        <TextBlock Text="Время вылета" Grid.Row="1"></TextBlock>
+        <TextBlock Text="Самолёт" Grid.Row="2"></TextBlock>
+        <TextBlock Text="Командир экипажа" Grid.Row="3"></TextBlock>
+        <ComboBox SelectedItem="{Binding Flights}" Grid.Column="1" Width="150" HorizontalAlignment="Left" x:Name="ComboFlights" DisplayMemberPath="FlightNumber"></ComboBox>
+        <TextBox Text="{Binding DepartureTime}" Grid.Column="1" Grid.Row="1" Width="300" HorizontalAlignment="Left"></TextBox>
+        <ComboBox SelectedItem="{Binding Planes}" Grid.Column="1" Grid.Row="2" Width="300" HorizontalAlignment="Left" x:Name="ComboPlanes" DisplayMemberPath="TypePlane"></ComboBox>
+        <TextBox Text="{Binding CrewCommander}" Grid.Column="1" Grid.Row="3" Width="300" HorizontalAlignment="Left"></TextBox>
+
+        <Button Content="Сохранить" Grid.ColumnSpan="2" Grid.Row="5" Name="BtnSaveDepartures" Click="BtnSaveDepartures_Click"></Button>
+    </Grid>
+</Page>
